@@ -60,10 +60,8 @@ namespace Boekel{
         time_data_t osb_time;
         timet_data_t osb_timet;
         
-
         unsigned long time_t; // raw time
 
-        // 
         unsigned char forecolor;
         unsigned char backcolor;
 

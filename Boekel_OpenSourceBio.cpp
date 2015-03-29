@@ -392,7 +392,28 @@ void Boekel::OpenSourceBio::updatereadings()
 
   waitforresponse((unsigned char*)&osb_reading, sizeof(reading_data_t));
 }
-/// @todo time_data_t* gettime()
+
+/**
+ * @brief gets the current time from the OSB circuit
+ * 
+ * @author Miguel (3/29/2015)
+ * 
+ * @return struct time_data_t* 
+ */
+struct Boekel::time_data_t* Boekel::OpenSourceBio::gettime()
+{
+
+  waitforready();
+
+  Wire.beginTransmission(I2C_ADDRESS);
+  Wire.write(I2C_COMMAND_TIME);
+  Wire.endTransmission();
+
+  waitforresponse((unsigned char*)&osb_time, sizeof(time_data_t));
+
+  return(&(osb_time));
+
+}
 
 /**
  * @brief gets a time_t compatible value from the OSB circuit
