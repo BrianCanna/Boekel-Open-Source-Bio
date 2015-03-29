@@ -7,8 +7,7 @@ OpenSourceBio osb;
 //The setup function will only run once
 void setup()
 {
- //Starting two wire(I2C) communication between the boards
- Wire.begin();
+
 }
 //Main program to print text
 void loop()

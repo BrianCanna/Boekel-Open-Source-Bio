@@ -11,7 +11,7 @@ OpenSourceBio osb;
 // The program setup loop runs once and we start the I2C library
 void setup()
 {
- Wire.begin();
+ 
 }
 // The program main loop runs continuously and it delays the program for 3000
 // milliseconds then gives the print command

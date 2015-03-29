@@ -40,17 +40,22 @@ namespace Boekel{
         double get_do_mgl();
         double get_do_percentage();
 
-        static const uint8_t COLOR_BLACK;
-        static const uint8_t COLOR_WHITE;
-        static const uint8_t COLOR_GREEN;
-        static const uint8_t COLOR_RED;
-        static const uint8_t COLOR_BLUE;
-        static const uint8_t COLOR_YELLOW;
-        static const uint8_t COLOR_PURPLE;
-        static const uint8_t COLOR_CYAN;
-        static const uint8_t COLOR_GREY;
-        static const uint8_t COLOR_DARKGREY;
-        static const uint8_t COLOR_TRANSPARENT;
+        static const uint8_t COLOR_BLACK = 0;
+        static const uint8_t COLOR_WHITE = 1;
+        static const uint8_t COLOR_GREEN = 2;
+        static const uint8_t COLOR_RED = 3;
+        static const uint8_t COLOR_BLUE = 4;
+        static const uint8_t COLOR_YELLOW = 5;
+        static const uint8_t COLOR_PURPLE = 6;
+        static const uint8_t COLOR_CYAN = 7;
+        static const uint8_t COLOR_GREY = 8;
+        static const uint8_t COLOR_DARKGREY = 9;
+        static const uint8_t COLOR_TRANSPARENT = 0x80;
+
+        static const uint8_t READING_TYPE_PH = 'P';
+        static const uint8_t READING_TYPE_EC = 'E';
+        static const uint8_t READING_TYPE_DO = 'D';
+        static const uint8_t READING_TYPE_TEMPERATURE = 'T';
 
     protected:
 
@@ -66,31 +71,26 @@ namespace Boekel{
         unsigned char backcolor;
 
         // I2C related constants
-        static const uint8_t I2C_ADDRESS;
-        static const uint8_t I2C_COMMAND_DRAWRECT;
-        static const uint8_t I2C_COMMAND_DRAWFILLEDRECT;
-        static const uint8_t I2C_COMMAND_DRAWTEXT;
-        static const uint8_t I2C_COMMAND_CLEARSCREEN;
-        static const uint8_t I2C_COMMAND_HOLDSCREEN;
-        static const uint8_t I2C_COMMAND_RELEASESCREEN;
-        static const uint8_t I2C_COMMAND_DRAWGRAPH_BAR;
-        static const uint8_t I2C_COMMAND_DRAWGRAPH_STEP;
-        static const uint8_t I2C_COMMAND_DATABUFFER;
-        static const uint8_t I2C_COMMAND_READ;
-        static const uint8_t I2C_COMMAND_TIME;
-        static const uint8_t I2C_COMMAND_TIMET;
+        static const uint8_t I2C_ADDRESS = 0x10;
+        static const uint8_t I2C_COMMAND_DRAWRECT = 0x1;
+        static const uint8_t I2C_COMMAND_DRAWFILLEDRECT = 0x2;
+        static const uint8_t I2C_COMMAND_DRAWTEXT = 0x3;
+        static const uint8_t I2C_COMMAND_CLEARSCREEN = 0x4;
+        static const uint8_t I2C_COMMAND_HOLDSCREEN = 0x5;
+        static const uint8_t I2C_COMMAND_RELEASESCREEN = 0x6;
+        static const uint8_t I2C_COMMAND_DRAWGRAPH_BAR = 32;
+        static const uint8_t I2C_COMMAND_DRAWGRAPH_STEP = 33;
+        static const uint8_t I2C_COMMAND_DATABUFFER = 64;
+        static const uint8_t I2C_COMMAND_READ = 128;
+        static const uint8_t I2C_COMMAND_TIME = 129;
+        static const uint8_t I2C_COMMAND_TIMET = 130;
 
-        static const uint8_t I2C_STATUS_IDLE;
-        static const uint8_t I2C_STATUS_BUSY;
-        static const uint8_t I2C_STATUS_RESPONSE;
-        static const uint8_t I2C_STATUS_BADCOMMAND;
+        static const uint8_t I2C_STATUS_IDLE = 0x0;
+        static const uint8_t I2C_STATUS_BUSY = 0x1;
+        static const uint8_t I2C_STATUS_RESPONSE = 0x2;
+        static const uint8_t I2C_STATUS_BADCOMMAND = 0x254;
 
-        static const uint8_t READING_TYPE_PH;
-        static const uint8_t READING_TYPE_EC;
-        static const uint8_t READING_TYPE_DO;
-        static const uint8_t READING_TYPE_TEMPERATURE;
-
-        static const uint8_t I2C_MAX_DATABUFFER;
+        static const uint8_t I2C_MAX_DATABUFFER = 28;
 
     };
 }

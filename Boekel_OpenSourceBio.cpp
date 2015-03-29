@@ -1,46 +1,9 @@
 #include <Boekel_OpenSourceBio.h>
 #include <Wire.h>
 
-const uint8_t Boekel::OpenSourceBio::I2C_ADDRESS = 0x10;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_DRAWRECT = 0x1;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_DRAWFILLEDRECT = 0x2;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_DRAWTEXT = 0x3;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_CLEARSCREEN = 0x4;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_HOLDSCREEN = 0x5;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_RELEASESCREEN = 0x6;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_DRAWGRAPH_BAR = 32;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_DRAWGRAPH_STEP = 33;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_DATABUFFER = 64;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_READ = 128;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_TIME = 129;
-const uint8_t Boekel::OpenSourceBio::I2C_COMMAND_TIMET = 130;
-
-const uint8_t Boekel::OpenSourceBio::I2C_STATUS_IDLE = 0x0;
-const uint8_t Boekel::OpenSourceBio::I2C_STATUS_BUSY = 0x1;
-const uint8_t Boekel::OpenSourceBio::I2C_STATUS_RESPONSE = 0x2;
-const uint8_t Boekel::OpenSourceBio::I2C_STATUS_BADCOMMAND = 0x254;
-
-const uint8_t Boekel::OpenSourceBio::COLOR_BLACK = 0;
-const uint8_t Boekel::OpenSourceBio::COLOR_WHITE = 1;
-const uint8_t Boekel::OpenSourceBio::COLOR_GREEN = 2;
-const uint8_t Boekel::OpenSourceBio::COLOR_RED = 3;
-const uint8_t Boekel::OpenSourceBio::COLOR_BLUE = 4;
-const uint8_t Boekel::OpenSourceBio::COLOR_YELLOW = 5;
-const uint8_t Boekel::OpenSourceBio::COLOR_PURPLE = 6;
-const uint8_t Boekel::OpenSourceBio::COLOR_CYAN = 7;
-const uint8_t Boekel::OpenSourceBio::COLOR_GREY = 8;
-const uint8_t Boekel::OpenSourceBio::COLOR_DARKGREY = 9;
-const uint8_t Boekel::OpenSourceBio::COLOR_TRANSPARENT = 0x80;
-
-const uint8_t Boekel::OpenSourceBio::READING_TYPE_PH = 'P';
-const uint8_t Boekel::OpenSourceBio::READING_TYPE_EC = 'E';
-const uint8_t Boekel::OpenSourceBio::READING_TYPE_DO = 'D';
-const uint8_t Boekel::OpenSourceBio::READING_TYPE_TEMPERATURE = 'T';
-
-const uint8_t Boekel::OpenSourceBio::I2C_MAX_DATABUFFER = 28;
-
 Boekel::OpenSourceBio::OpenSourceBio()
 {
+    Wire.begin();
     reading_data_t osb_reading = {0, 0, 0, 0, 0, 0, 0, 0};
     time_data_t osb_time = {0, 0, 0, 0, 0, 0};
     timet_data_t osb_timet = {0};
