@@ -13,20 +13,18 @@ void setup()
 void loop()
 {
 //Setting Colors
- osb.setForeColor(OpenSourceBio::COLOR_RED);
- osb.setBackColor(OpenSourceBio::COLOR_BLUE);
 
 
  //Clearing Screen
  osb.clearScreen(OpenSourceBio::COLOR_BLACK);
  //draw text on screen x coordinate, y coordinate, "text");
- osb.drawText(10, 10, "Boekel Open Source Bio");
- osb.drawText(10, 30, "Screen Test ");
- osb.drawText(10, 50, "Screen Test ");
- osb.drawText(10, 70, "Screen Test ");
- osb.drawText(10, 90, "Screen Test ");
- osb.drawText(10, 110, "Screen Test ");
- osb.drawText(10, 130, "Screen Test ");
+ osb.displayText(10, 10,OpenSourceBio::COLOR_BLUE, OpenSourceBio::COLOR_RED,"Boekel Open Source Bio");
+ osb.displayText(10, 30,OpenSourceBio::COLOR_RED, OpenSourceBio::COLOR_BLUE,"Week Day:");
+ osb.displayText(10, 50,OpenSourceBio::COLOR_GREEN, OpenSourceBio::COLOR_WHITE,osb.getWeekDay());
+ osb.displayText(10, 70,OpenSourceBio::COLOR_CYAN, OpenSourceBio::COLOR_PURPLE,"Screen Test Line 1 ");
+ osb.displayText(10, 90,OpenSourceBio::COLOR_YELLOW, OpenSourceBio::COLOR_DARKGREY,"Screen Test Line 2");
+ osb.displayText(10, 110,OpenSourceBio::COLOR_WHITE, OpenSourceBio::COLOR_BLACK,"Screen Test Line 3");
+ osb.displayText(10, 130,OpenSourceBio::COLOR_RED, OpenSourceBio::COLOR_GREEN,"Screen Test Line 4");
  //pausing for three seconds
  delay(3000);
 } 

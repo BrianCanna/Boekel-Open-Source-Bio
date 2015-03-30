@@ -253,6 +253,7 @@ void Boekel::OpenSourceBio::clearScreen(unsigned char _color)
  */
 void Boekel::OpenSourceBio::drawFilledRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height)
 {
+
   waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
@@ -609,4 +610,83 @@ double Boekel::OpenSourceBio::getDOpercentage()
   // for DO readings, the percentage reading * 10.0 is in reading 1
   // just divide by 10.0 to get the percentage again  
   return((double)osb_reading.reading2 / 10.0);
+}
+
+unsigned char Boekel::OpenSourceBio::getHours()
+{
+     
+     return getTime()->hours;
+}
+
+unsigned char Boekel::OpenSourceBio::getMinutes()
+{
+     
+    return getTime()->minutes;
+}
+
+unsigned char Boekel::OpenSourceBio::getSeconds()
+{ 
+    return getTime()->seconds;
+}
+
+const char* Boekel::OpenSourceBio::getWeekDay()
+{
+
+    uint8_t d = getTime()->day;
+    uint8_t m = getTime()->month;
+    unsigned int y = getTime()->year;
+
+    uint8_t weekDay;
+
+    weekDay = (d+=m<3?y--:y-2,23*m/9+d+4+y/4-y/100+y/400)%7;
+
+    switch(weekDay)
+    {
+    case 0:
+        return "Sun";
+        break;
+    case 1:
+        return "Mon";
+        break;
+    case 2:
+        return "Tues";
+        break;
+    case 3:
+        return "Wed";
+        break;
+    case 4:
+        return "Thurs";
+        break;
+    case 5:
+        return "Fri";
+        break;
+    case 6:
+        return "Sat";
+        break;
+    default:
+        return "---";
+        break;
+    }
+}
+unsigned char Boekel::OpenSourceBio::getDay()
+{
+    return getTime()->day;
+}
+
+unsigned char Boekel::OpenSourceBio::getMonth()
+{
+     // @todo
+    return getTime()->month;
+}
+
+unsigned int Boekel::OpenSourceBio::getYear()
+{
+    return getTime()->year;
+}
+
+void Boekel::OpenSourceBio::displayText(unsigned int _x, unsigned int _y, unsigned char _forecolor, unsigned char _backcolor, const char* _text)
+{
+    setForeColor(_forecolor);
+    setBackColor(_backcolor);
+    drawText(_x,_y,_text);
 }
