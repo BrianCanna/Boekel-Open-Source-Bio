@@ -11,20 +11,14 @@ OpenSourceBio osb;
 // The program setup loop runs once and we start the I2C library
 void setup()
 {
- 
+  //Clearing Screen
+ osb.clearScreen(OpenSourceBio::COLOR_BLACK);
+
+ // Print command osb_drawtext(x coordinate, y coordinate, “Text”);
+ osb.displayText(100, 100, OpenSourceBio::COLOR_RED, OpenSourceBio::COLOR_TRANSPARENT, "HELLO WORLD");
 }
-// The program main loop runs continuously and it delays the program for 3000
-// milliseconds then gives the print command
+
 void loop()
 {
- delay(3000);
- //Setting Colors
- osb.setForeColor(OpenSourceBio::COLOR_RED);
- osb.setBackColor(OpenSourceBio::COLOR_TRANSPARENT);
 
-
- //Clearing Screen
- osb.clearScreen(OpenSourceBio::COLOR_BLACK);
- // Print command osb_drawtext(x coordinate, y coordinate, “Text”);
- osb.drawText(100, 100, "HELLO WORLD");
 } 

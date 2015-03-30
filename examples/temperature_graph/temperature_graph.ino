@@ -26,13 +26,11 @@ void setup()
   // clear the screen
   osb.clearScreen(OpenSourceBio::COLOR_BLACK);
 
-  osb.setForeColor(OpenSourceBio::COLOR_WHITE);
-  osb.setBackColor(OpenSourceBio::COLOR_TRANSPARENT);
-  osb.drawRect(5, 90, 310, 120, 3);
+  osb.displayFilledRectangle(5,90,310,120,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,3);
   
   // draw some text
-  osb.drawText(60, 10, "Boekel Open Source Bio");
-  osb.drawText(50, 60, "Current temperature:");
+  osb.displayText(60, 10,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Boekel Open Source Bio");
+  osb.displayText(50, 60,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Current temperature:");
 
   // release the screen
   osb.releaseScreen();
@@ -89,21 +87,18 @@ void loop()
         buffer[0] = 0;
     }
 
-    // black on black to clear the previous data from the screen
-    osb.setBackColor(OpenSourceBio::COLOR_BLACK);
-    osb.setForeColor(OpenSourceBio::COLOR_BLACK);
 
-    // clear the rectangles where the temperature reading and graphs were
-    osb.drawFilledRect(230, 60, 80, 16);
-    osb.drawFilledRect(10, 95, 300, 110);
+
+    // clear the rectangles where the temperature reading and graphs were using black on black to clear the previous data from the screen
+    osb.displayFilledRectangle(230, 60, 80, 16,OpenSourceBio::COLOR_BLACK,OpenSourceBio::COLOR_BLACK,0);
+    osb.displayFilledRectangle(10, 95, 300, 110,OpenSourceBio::COLOR_BLACK,OpenSourceBio::COLOR_BLACK,0);
 
     // use red to draw the graph
-    osb.setForeColor(OpenSourceBio::COLOR_RED);
-    osb.drawGraphStep(10, 95, 300, 110, GRAPH_POINTS, &tempdata[0]);
+
+    osb.drawGraphStep(10, 95, 300, 110, GRAPH_POINTS, &tempdata[0],OpenSourceBio::COLOR_RED, OpenSourceBio::COLOR_TRANSPARENT);
 
     // use white to draw the current temperature
-    osb.setForeColor(OpenSourceBio::COLOR_WHITE);
-    osb.drawText(230, 60, buffer);
+    osb.displayText(230, 60, OpenSourceBio::COLOR_WHITE, OpenSourceBio::COLOR_TRANSPARENT, buffer);
 
     // allow the screen to paint
     osb.releaseScreen();

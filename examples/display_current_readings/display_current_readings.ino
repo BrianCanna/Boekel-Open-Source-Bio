@@ -37,6 +37,8 @@ void loop()
     }
 }
 
+// Below are some functions we created to show you how you could make your own user interfaces
+
 void draw_common()
 {
 
@@ -47,24 +49,21 @@ void draw_common()
 
   // clear the screen
   osb.clearScreen(OpenSourceBio::COLOR_BLACK);
-
-  osb.setForeColor(OpenSourceBio::COLOR_WHITE);
-  osb.setBackColor(OpenSourceBio::COLOR_TRANSPARENT);
   
-  // draw some text
-  osb.drawText(10, 10, "Boekel Open Source Bio");
-  osb.drawText(10, 30, "Temperature: ");
+  // draw some text. White color, transparent background.
+  osb.displayText(10,10,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"Boekel Open Source Bio");
+  osb.displayText(10,30,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"Temperature: ");
   Serial.print("Temperature: ");
 
   if(osb.getTemperatureValid())
   {
-    dtostrf(osb.getTemperature(), 3, 1, buffer);
-    osb.drawText(160, 30, buffer);
+    dtostrf(osb.getTemperature(), 3, 1, buffer); // getTemperature returns an integer, wee need to change it to a char aray to display it.
+    osb.displayText(160,30,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,buffer);
     Serial.println(buffer);
   }
   else
   {
-    osb.drawText(160, 30, "----");
+    osb.displayText(160,30,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"----");
     Serial.println("(not valid)");
   }
 
@@ -72,18 +71,13 @@ void draw_common()
   for(i = 0; i < 255; i++)
     data[i] = i;
   
-  osb.setForeColor(OpenSourceBio::COLOR_BLUE);
-  osb.drawGraphBars(1, 100, 318, 110, 255, &data[0]);
+  osb.drawGraphBars(1, 100, 318, 110, 255, &data[0],OpenSourceBio::COLOR_BLUE,OpenSourceBio::COLOR_TRANSPARENT);
 
   // draw another sample graph, this time using 16 data points, in red, and as a step graph
   for(i = 0; i < 16; i++)
     data[i] = 255 - (16 * i);
   
-  osb.setForeColor(OpenSourceBio::COLOR_RED);
-  osb.drawGraphStep(1, 100, 318, 110, 16, &data[0]);
-
-  // reset the foreground color
-  osb.setForeColor(OpenSourceBio::COLOR_WHITE);
+  osb.drawGraphStep(1, 100, 318, 110, 16, &data[0],OpenSourceBio::COLOR_RED,OpenSourceBio::COLOR_TRANSPARENT);
   
 }
 
@@ -101,25 +95,25 @@ void draw_pH()
     osb.holdScreen();
     draw_common();
     // draw some text
-    osb.drawText(10, 50, "pH Readings");
+    osb.displayText(10,50,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"pH Readings");
     Serial.println("pH");
-    osb.drawText(10, 70, "pH");
-    osb.drawText(10, 90, "Approx mV");
+    osb.displayText(10,70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"pH");
+    osb.displayText(10,90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"Approx mV");
     if(osb.getReadingValid())
     {
         dtostrf(osb.getPH(), 2, 3, buffer);
-        osb.drawText(160, 70, buffer);
+        osb.displayText(160,70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,buffer);
         Serial.print("pH: ");
         Serial.println(buffer);
         dtostrf(osb.getPHmV(), 3, 1, buffer);
-        osb.drawText(160, 90, buffer);
+        osb.displayText(160,90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,buffer);
         Serial.print("Approx mV: ");
         Serial.println(buffer);
     }
     else
     {
-        osb.drawText(160, 70, "----");
-        osb.drawText(160, 90, "----");
+        osb.displayText(160,70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"----");
+        osb.displayText(160,90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"----");
         Serial.println("Readings not valid");
     }
     osb.releaseScreen();
@@ -132,26 +126,32 @@ void draw_do()
     draw_common();
 
     // draw some text
-    osb.drawText(10, 50, "Dissolved Oxygen Readings"); 
+    osb.displayText(10, 50,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Dissolved Oxygen Readings"); 
+
     Serial.println("Dissolved Oxygen");
-    osb.drawText(10, 70, "mg/L");
-    osb.drawText(10, 90, "% Saturation");
+    osb.displayText(10, 70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "mg/L");
+
+    osb.displayText(10, 90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "% Saturation");
 
     if(osb.getReadingValid())
     {
         dtostrf(osb.getDOmgl(), 3, 1, buffer);
-        osb.drawText(160, 70, buffer);
+        osb.displayText(160, 70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, buffer);
+
         Serial.print("mg/L: ");
         Serial.println(buffer);
         dtostrf(osb.getDOpercentage(), 3, 1, buffer);
-        osb.drawText(160, 90, buffer);
+        osb.displayText(160, 90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, buffer);
+
         Serial.print("% Saturation: ");
         Serial.println(buffer);
     }
     else
     {
-        osb.drawText(160, 70, "----");
-        osb.drawText(160, 90, "----");
+        osb.displayText(160, 70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "----");
+
+        osb.displayText(160, 90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "----");
+
         Serial.println("Readings not valid");
     }
     osb.releaseScreen();
@@ -164,19 +164,23 @@ void draw_ec()
     osb.holdScreen();
     draw_common();
     // draw some text
-    osb.drawText(10, 50, "Electrolytic Conductivity");
+    osb.displayText(10, 50,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Electrolytic Conductivity");
+
     Serial.println("Electrolytic Conductivity");
-    osb.drawText(10, 70, "uS/cm");
-    osb.drawText(10, 90, "PSS");
+    osb.displayText(10, 70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "uS/cm");
+    osb.displayText(10, 90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "PSS");
+
 
     if(osb.getReadingValid())
     {
         dtostrf(osb.getEC(), 6, 1, buffer);
-        osb.drawText(160, 70, buffer);
+        osb.displayText(160, 70, OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,buffer);
+
         Serial.print("uS/cm: ");
         Serial.println(buffer);
         dtostrf(osb.getECpss(), 2, 1, buffer);
-        osb.drawText(160, 90, buffer);
+        osb.displayText(160, 90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, buffer);
+
         Serial.print("PSS: ");
         Serial.println(buffer);
         dtostrf(osb.getECtds(), 2, 1, buffer);
@@ -185,9 +189,10 @@ void draw_ec()
     }
     else
     {
-        osb.drawText(160, 70, "----");
-        osb.drawText(160, 90, "----");
+        osb.displayText(160, 70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "----");
+        osb.displayText(160, 90,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "----");
         Serial.println("Readings not valid");
     }
     osb.releaseScreen();
 } 
+

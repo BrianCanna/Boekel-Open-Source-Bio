@@ -13,16 +13,12 @@ namespace Boekel{
 
         OpenSourceBio();
 
-        void setForeColor(unsigned char _color),
-            setBackColor(unsigned char _color),
-            drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness),
-            holdScreen(),
+        void holdScreen(),
             releaseScreen(),
             clearScreen(unsigned char _color),
-            drawFilledRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height),
-            drawText(unsigned int _x, unsigned char _y, const char* _text),
-            drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points),
-            drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points),
+            displayFilledRectangle(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _forecolor, unsigned char _backcolor, unsigned char _thickness),
+            drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points, unsigned char _forecolor,unsigned char _backcolor),
+            drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points, unsigned char _forecolor,unsigned char _backcolor),
             updateReadings(),
             displayText(unsigned int _x, unsigned int _y, unsigned char _forecolor, unsigned char _backcolor, const char* _text); //@todo
             //displayBarGraph(tperiod), //@todo
@@ -75,10 +71,15 @@ namespace Boekel{
     protected:
 
     private:
-        void waitForReady(),
+        void setForeColor(unsigned char _color),
+            setBackColor(unsigned char _color),
+            waitForReady(),
             waitForResponse(unsigned char* _data, unsigned char _size),
             dataBuffer(unsigned char _count, const unsigned char* _data),
-            sendExtent(unsigned int _x, unsigned char _y);
+            sendExtent(unsigned int _x, unsigned char _y),
+            drawText(unsigned int _x, unsigned char _y, const char* _text),
+            drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _forecolor ,unsigned char _thickness),
+            drawFilledRectangle(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _backcolor );
 
         reading_data_t osb_reading;
         time_data_t osb_time;

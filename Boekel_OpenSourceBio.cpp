@@ -168,7 +168,7 @@ void Boekel::OpenSourceBio::sendExtent(unsigned int _x, unsigned char _y)
 }
 
 /**
- * @brief Draws a rectangle on the screen
+ * @brief draws a rectangle with border only.
  * 
  * @author Miguel (3/28/2015)
  * 
@@ -178,8 +178,9 @@ void Boekel::OpenSourceBio::sendExtent(unsigned int _x, unsigned char _y)
  * @param _height 
  * @param _thickness 
  */
-void Boekel::OpenSourceBio::drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness)
+void Boekel::OpenSourceBio::drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _forecolor, unsigned char _thickness)
 {
+
   waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
@@ -188,7 +189,7 @@ void Boekel::OpenSourceBio::drawRect(unsigned int _x, unsigned char _y, unsigned
   sendExtent(_x, _y);
   sendExtent(_width, _height);
   Wire.write(_thickness);
-  Wire.write(forecolor);
+  Wire.write(_forecolor);
 
   Wire.endTransmission();
 }
@@ -242,16 +243,17 @@ void Boekel::OpenSourceBio::clearScreen(unsigned char _color)
 }
 
 /**
- * @brief draws a filled rectangle on the screen
+ * @brief Display a filled rectangle without a border color.
  * 
- * @author Miguel (3/28/2015)
+ * @author Miguel (3/30/2015)
  * 
  * @param _x 
  * @param _y 
  * @param _width 
  * @param _height 
+ * @param _backcolor 
  */
-void Boekel::OpenSourceBio::drawFilledRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height)
+void Boekel::OpenSourceBio::drawFilledRectangle(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _backcolor)
 {
 
   waitForReady();
@@ -261,9 +263,40 @@ void Boekel::OpenSourceBio::drawFilledRect(unsigned int _x, unsigned char _y, un
   Wire.write(I2C_COMMAND_DRAWFILLEDRECT);
   sendExtent(_x, _y);
   sendExtent(_width, _height);
-  Wire.write(forecolor);
+  Wire.write(_backcolor);
 
   Wire.endTransmission();
+
+}
+
+/**
+ * @brief Displayed a filled ractangled with a border.
+ * 
+ * @author Miguel (3/30/2015)
+ * 
+ * @param _x 
+ * @param _y 
+ * @param _width 
+ * @param _height 
+ * @param _forecolor 
+ * @param _backcolor 
+ */
+void Boekel::OpenSourceBio::displayFilledRectangle(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _forecolor, unsigned char _backcolor, unsigned char _thickness)
+{
+
+  drawRect(_x,_y,_width,_height,_forecolor,_thickness);
+
+  drawRect(0,0,0,0,_backcolor,0); // BUG? The drawFillRectangle function does
+                                  // not change the color unless the drawRect
+                                  // function is used before so I had to call it here for that reason.
+
+  drawFilledRectangle(
+     _x+_thickness,
+     _y+_thickness,
+     _width - (2*_thickness),
+     _height - (2*_thickness),
+     _backcolor
+     );
 }
 
 /**
@@ -302,7 +335,7 @@ void Boekel::OpenSourceBio::drawText(unsigned int _x, unsigned char _y, const ch
  * @param _pointcount 
  * @param _points 
  */
-void Boekel::OpenSourceBio::drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points)
+void Boekel::OpenSourceBio::drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points, unsigned char _forecolor, unsigned char _backcolor)
 {
   // set the points into the data buffer
   dataBuffer(_pointcount, _points);
@@ -313,8 +346,8 @@ void Boekel::OpenSourceBio::drawGraphBars(unsigned int _x, unsigned char _y, uns
   Wire.write(I2C_COMMAND_DRAWGRAPH_BAR);
   sendExtent(_x, _y);
   sendExtent(_width, _height);
-  Wire.write(forecolor);
-  Wire.write(backcolor);
+  Wire.write(_forecolor);
+  Wire.write(_backcolor);
   Wire.endTransmission();
 }
 
@@ -330,7 +363,7 @@ void Boekel::OpenSourceBio::drawGraphBars(unsigned int _x, unsigned char _y, uns
  * @param _pointcount 
  * @param _points 
  */
-void Boekel::OpenSourceBio::drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points)
+void Boekel::OpenSourceBio::drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points, unsigned char _forecolor, unsigned char _backcolor)
 {
   // set the points into the data buffer
   dataBuffer(_pointcount, _points);
@@ -341,8 +374,8 @@ void Boekel::OpenSourceBio::drawGraphStep(unsigned int _x, unsigned char _y, uns
   Wire.write(I2C_COMMAND_DRAWGRAPH_STEP);
   sendExtent(_x, _y);
   sendExtent(_width, _height);
-  Wire.write(forecolor);
-  Wire.write(backcolor);
+  Wire.write(_forecolor);
+  Wire.write(_backcolor);
   Wire.endTransmission();
 }
 
