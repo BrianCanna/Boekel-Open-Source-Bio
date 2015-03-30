@@ -14,7 +14,7 @@ void loop()
 {
 //Setting Colors
  osb.setforecolor(OpenSourceBio::COLOR_RED);
- osb.setbackcolor(OpenSourceBio::COLOR_TRANSPARENT);
+ osb.setbackcolor(OpenSourceBio::COLOR_BLUE);
 
 
  //Clearing Screen

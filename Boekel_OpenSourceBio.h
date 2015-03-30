@@ -13,10 +13,6 @@ namespace Boekel{
         OpenSourceBio();
         void setforecolor(unsigned char _color);
         void setbackcolor(unsigned char _color);
-        void waitforready();
-        void waitforresponse(unsigned char* _data, unsigned char _size);
-        void databuffer(unsigned char _count, const unsigned char* _data);
-        void sendextent(unsigned int _x, unsigned char _y);
         void drawrect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness);
         void holdscreen();
         void releasescreen();
@@ -60,7 +56,11 @@ namespace Boekel{
     protected:
 
     private:
-        
+        void waitforready();
+        void waitforresponse(unsigned char* _data, unsigned char _size);
+        void databuffer(unsigned char _count, const unsigned char* _data);
+        void sendextent(unsigned int _x, unsigned char _y);
+
         reading_data_t osb_reading;
         time_data_t osb_time;
         timet_data_t osb_timet;

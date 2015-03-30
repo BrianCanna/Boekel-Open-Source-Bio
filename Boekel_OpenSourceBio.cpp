@@ -10,11 +10,14 @@ Boekel::OpenSourceBio::OpenSourceBio()
 }
 
 /**
- * @brief
+ * @brief Sets the text's character color. You may choose any 
+ *        color from the library as defined in the header (.h)
+ *        file e.g. COLOR_BLACK, COLOR_RED, COLOR_BLUE
  * 
  * @author Miguel (3/28/2015)
  * 
- * @param _color 
+ * @param _color The color you wish to use for the 
+ *               foreground/text
  */
 void Boekel::OpenSourceBio::setforecolor(unsigned char _color)
 {
@@ -22,7 +25,9 @@ void Boekel::OpenSourceBio::setforecolor(unsigned char _color)
 }
 
 /**
- * @brief
+ * @brief Set's the text's background color. You may choose any 
+ *        color from the library as defined in the header (.h)
+ *        file e.g. COLOR_BLACK, COLOR_RED, COLOR_BLUE
  * 
  * @author Miguel (3/28/2015)
  * 
@@ -35,7 +40,7 @@ void Boekel::OpenSourceBio::setbackcolor(unsigned char _color)
 
 /**
  * @brief Waits until the I2C returns a ready status from the 
- *        board
+ *        board.
  * 
  * @author Miguel (3/28/2015)
  */
@@ -95,7 +100,7 @@ void Boekel::OpenSourceBio::waitforresponse(unsigned char* _data, unsigned char 
 }
 
 /**
- * @brief sets the data buffer, using multiple transfers to 
+ * @brief Sets the data buffer, using multiple transfers to 
  *        obtain up to 255 bytes transfered
  * 
  * @author Miguel (3/28/2015)
@@ -163,7 +168,7 @@ void Boekel::OpenSourceBio::sendextent(unsigned int _x, unsigned char _y)
 }
 
 /**
- * @brief draws a rectangle on the screen
+ * @brief Draws a rectangle on the screen
  * 
  * @author Miguel (3/28/2015)
  * 
