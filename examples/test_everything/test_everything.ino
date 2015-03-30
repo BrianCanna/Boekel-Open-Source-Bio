@@ -8,7 +8,7 @@ OpenSourceBio osb;
 void setup()
 {
   Serial.begin(38400);
-  osb.clearscreen(OpenSourceBio::COLOR_BLACK);
+  osb.clearScreen(OpenSourceBio::COLOR_BLACK);
 }
 //Main program to print text
 void loop()
@@ -16,18 +16,18 @@ void loop()
     time_data_t* ot;
     unsigned long tt;
 
-    Serial.print("Paused...");
+    Serial.print("Paused. Type any letter and press enter to continue...");
     while(Serial.available() == 0);
     Serial.read();
     delay(100);
 
     Serial.println("Requesting time_t from OSB"); 
-    tt = osb.gettime_t();
+    tt = osb.getTimeRaw();
     Serial.print("time_t=");
     Serial.println(tt);
 
     Serial.println("Requesting decoded time from OSB"); 
-    ot = osb.gettime();
+    ot = osb.getTime();
 
     Serial.print("Current time: ");
     Serial.print(ot->hours);
@@ -45,13 +45,13 @@ void loop()
 
     Serial.println("Requesting a reading");
 
-    osb.updatereadings();
+    osb.updateReadings();
 
     Serial.print("Got a reading type of ");
-    Serial.print(osb.get_readingtype());
+    Serial.print(osb.getReadingType());
     Serial.println();
 
-    switch(osb.get_readingtype())
+    switch(osb.getReadingType())
     {
 
     case OpenSourceBio::READING_TYPE_PH:
@@ -85,25 +85,25 @@ void draw_common()
   char buffer[12];
 
   // clear the screen
-  osb.clearscreen(OpenSourceBio::COLOR_BLACK);
+  osb.clearScreen(OpenSourceBio::COLOR_BLACK);
 
-  osb.setforecolor(OpenSourceBio::COLOR_WHITE);
-  osb.setbackcolor(OpenSourceBio::COLOR_TRANSPARENT);
+  osb.setForeColor(OpenSourceBio::COLOR_WHITE);
+  osb.setBackColor(OpenSourceBio::COLOR_TRANSPARENT);
   
   // draw some text
-  osb.drawtext(10, 10, "Boekel Open Source Bio");
-  osb.drawtext(10, 30, "Temperature: ");
+  osb.drawText(10, 10, "Boekel Open Source Bio");
+  osb.drawText(10, 30, "Temperature: ");
   Serial.print("Temperature: ");
 
-  if(osb.get_temperaturevalid())
+  if(osb.getTemperatureValid())
   {
-    dtostrf(osb.get_temperature(), 3, 1, buffer);
-    osb.drawtext(160, 30, buffer);
+    dtostrf(osb.getTemperature(), 3, 1, buffer);
+    osb.drawText(160, 30, buffer);
     Serial.println(buffer);
   }
   else
   {
-    osb.drawtext(160, 30, "----");
+    osb.drawText(160, 30, "----");
     Serial.println("(not valid)");
   }
 
@@ -111,122 +111,122 @@ void draw_common()
   for(i = 0; i < 255; i++)
     data[i] = i;
   
-  osb.setforecolor(OpenSourceBio::COLOR_BLUE);
-  osb.drawgraph_bars(1, 100, 318, 110, 255, &data[0]);
+  osb.setForeColor(OpenSourceBio::COLOR_BLUE);
+  osb.drawGraphBars(1, 100, 318, 110, 255, &data[0]);
 
   // draw another sample graph, this time using 16 data points, in red, and as a step graph
   for(i = 0; i < 16; i++)
     data[i] = 255 - (16 * i);
   
-  osb.setforecolor(OpenSourceBio::COLOR_RED);
-  osb.drawgraph_step(1, 100, 318, 110, 16, &data[0]);
+  osb.setForeColor(OpenSourceBio::COLOR_RED);
+  osb.drawGraphStep(1, 100, 318, 110, 16, &data[0]);
 
   // reset the foreground color
-  osb.setforecolor(OpenSourceBio::COLOR_WHITE);
+  osb.setForeColor(OpenSourceBio::COLOR_WHITE);
   
 }
 
 void draw_temperature()
 { 
- osb.holdscreen();
+ osb.holdScreen();
  draw_common();
- osb.releasescreen();
+ osb.releaseScreen();
 } 
 
 
 void draw_pH()
 {
     char buffer[12];
-    osb.holdscreen();
+    osb.holdScreen();
     draw_common();
     // draw some text
-    osb.drawtext(10, 50, "pH Readings");
+    osb.drawText(10, 50, "pH Readings");
     Serial.println("pH");
-    osb.drawtext(10, 70, "pH");
-    osb.drawtext(10, 90, "Approx mV");
-    if(osb.get_readingvalid())
+    osb.drawText(10, 70, "pH");
+    osb.drawText(10, 90, "Approx mV");
+    if(osb.getReadingValid())
     {
-        dtostrf(osb.get_ph(), 2, 3, buffer);
-        osb.drawtext(160, 70, buffer);
+        dtostrf(osb.getPH(), 2, 3, buffer);
+        osb.drawText(160, 70, buffer);
         Serial.print("pH: ");
         Serial.println(buffer);
-        dtostrf(osb.get_ph_mV(), 3, 1, buffer);
-        osb.drawtext(160, 90, buffer);
+        dtostrf(osb.getPHmV(), 3, 1, buffer);
+        osb.drawText(160, 90, buffer);
         Serial.print("Approx mV: ");
         Serial.println(buffer);
     }
     else
     {
-        osb.drawtext(160, 70, "----");
-        osb.drawtext(160, 90, "----");
+        osb.drawText(160, 70, "----");
+        osb.drawText(160, 90, "----");
         Serial.println("Readings not valid");
     }
-    osb.releasescreen();
+    osb.releaseScreen();
 } 
 
 void draw_do()
 {
     char buffer[12];
-    osb.holdscreen();
+    osb.holdScreen();
     draw_common();
 
     // draw some text
-    osb.drawtext(10, 50, "Dissolved Oxygen Readings"); 
+    osb.drawText(10, 50, "Dissolved Oxygen Readings"); 
     Serial.println("Dissolved Oxygen");
-    osb.drawtext(10, 70, "mg/L");
-    osb.drawtext(10, 90, "% Saturation");
+    osb.drawText(10, 70, "mg/L");
+    osb.drawText(10, 90, "% Saturation");
 
-    if(osb.get_readingvalid())
+    if(osb.getReadingValid())
     {
-        dtostrf(osb.get_do_mgl(), 3, 1, buffer);
-        osb.drawtext(160, 70, buffer);
+        dtostrf(osb.getDOmgl(), 3, 1, buffer);
+        osb.drawText(160, 70, buffer);
         Serial.print("mg/L: ");
         Serial.println(buffer);
-        dtostrf(osb.get_do_percentage(), 3, 1, buffer);
-        osb.drawtext(160, 90, buffer);
+        dtostrf(osb.getDOpercentage(), 3, 1, buffer);
+        osb.drawText(160, 90, buffer);
         Serial.print("% Saturation: ");
         Serial.println(buffer);
     }
     else
     {
-        osb.drawtext(160, 70, "----");
-        osb.drawtext(160, 90, "----");
+        osb.drawText(160, 70, "----");
+        osb.drawText(160, 90, "----");
         Serial.println("Readings not valid");
     }
-    osb.releasescreen();
+    osb.releaseScreen();
 } 
 
 
 void draw_ec()
 {
     char buffer[12];
-    osb.holdscreen();
+    osb.holdScreen();
     draw_common();
     // draw some text
-    osb.drawtext(10, 50, "Electrolytic Conductivity");
+    osb.drawText(10, 50, "Electrolytic Conductivity");
     Serial.println("Electrolytic Conductivity");
-    osb.drawtext(10, 70, "uS/cm");
-    osb.drawtext(10, 90, "PSS");
+    osb.drawText(10, 70, "uS/cm");
+    osb.drawText(10, 90, "PSS");
 
-    if(osb.get_readingvalid())
+    if(osb.getReadingValid())
     {
-        dtostrf(osb.get_ec(), 6, 1, buffer);
-        osb.drawtext(160, 70, buffer);
+        dtostrf(osb.getEC(), 6, 1, buffer);
+        osb.drawText(160, 70, buffer);
         Serial.print("uS/cm: ");
         Serial.println(buffer);
-        dtostrf(osb.get_ec_pss(), 2, 1, buffer);
-        osb.drawtext(160, 90, buffer);
+        dtostrf(osb.getECpss(), 2, 1, buffer);
+        osb.drawText(160, 90, buffer);
         Serial.print("PSS: ");
         Serial.println(buffer);
-        dtostrf(osb.get_ec_tds(), 2, 1, buffer);
+        dtostrf(osb.getECtds(), 2, 1, buffer);
         Serial.print("TDS: "); 
         Serial.println(buffer);
     }
     else
     {
-        osb.drawtext(160, 70, "----");
-        osb.drawtext(160, 90, "----");
+        osb.drawText(160, 70, "----");
+        osb.drawText(160, 90, "----");
         Serial.println("Readings not valid");
     }
-    osb.releasescreen();
+    osb.releaseScreen();
 }

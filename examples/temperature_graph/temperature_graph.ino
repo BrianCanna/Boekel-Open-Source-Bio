@@ -21,21 +21,21 @@ void setup()
   }
   
   // hold all painting
-  osb.holdscreen();
+  osb.holdScreen();
   
   // clear the screen
-  osb.clearscreen(OpenSourceBio::COLOR_BLACK);
+  osb.clearScreen(OpenSourceBio::COLOR_BLACK);
 
-  osb.setforecolor(OpenSourceBio::COLOR_WHITE);
-  osb.setbackcolor(OpenSourceBio::COLOR_TRANSPARENT);
-  osb.drawrect(5, 90, 310, 120, 3);
+  osb.setForeColor(OpenSourceBio::COLOR_WHITE);
+  osb.setBackColor(OpenSourceBio::COLOR_TRANSPARENT);
+  osb.drawRect(5, 90, 310, 120, 3);
   
   // draw some text
-  osb.drawtext(60, 10, "Boekel Open Source Bio");
-  osb.drawtext(50, 60, "Current temperature:");
+  osb.drawText(60, 10, "Boekel Open Source Bio");
+  osb.drawText(50, 60, "Current temperature:");
 
   // release the screen
-  osb.releasescreen();
+  osb.releaseScreen();
 }
 
 void loop()
@@ -58,21 +58,21 @@ void loop()
     }
 
     // hold all painting
-    osb.holdscreen();
+    osb.holdScreen();
 
     // snap current readings
-    osb.updatereadings();
+    osb.updateReadings();
 
     // save the data if it's valid, otherwise, give it some default values
-    if(osb.get_temperaturevalid())
+    if(osb.getTemperatureValid())
     {
         // get the temperature
-        temperature = osb.get_temperature();
+        temperature = osb.getTemperature();
 
         // if it exceeded the maximum, make sure we paint it correctly
         if(temperature < MAX_TEMPERATURE)
         {   
-            tempdata[datacount - 1] = (osb.get_temperature() * 255.0) / MAX_TEMPERATURE;
+            tempdata[datacount - 1] = (osb.getTemperature() * 255.0) / MAX_TEMPERATURE;
         }
         else
         {   
@@ -80,7 +80,7 @@ void loop()
         }
 
         // save the temperature to a string, so we can display it
-        dtostrf(osb.get_temperature(), 2, 1, buffer);
+        dtostrf(osb.getTemperature(), 2, 1, buffer);
     }
     else
     {
@@ -90,23 +90,23 @@ void loop()
     }
 
     // black on black to clear the previous data from the screen
-    osb.setbackcolor(OpenSourceBio::COLOR_BLACK);
-    osb.setforecolor(OpenSourceBio::COLOR_BLACK);
+    osb.setBackColor(OpenSourceBio::COLOR_BLACK);
+    osb.setForeColor(OpenSourceBio::COLOR_BLACK);
 
     // clear the rectangles where the temperature reading and graphs were
-    osb.drawfilledrect(230, 60, 80, 16);
-    osb.drawfilledrect(10, 95, 300, 110);
+    osb.drawFilledRect(230, 60, 80, 16);
+    osb.drawFilledRect(10, 95, 300, 110);
 
     // use red to draw the graph
-    osb.setforecolor(OpenSourceBio::COLOR_RED);
-    osb.drawgraph_step(10, 95, 300, 110, GRAPH_POINTS, &tempdata[0]);
+    osb.setForeColor(OpenSourceBio::COLOR_RED);
+    osb.drawGraphStep(10, 95, 300, 110, GRAPH_POINTS, &tempdata[0]);
 
     // use white to draw the current temperature
-    osb.setforecolor(OpenSourceBio::COLOR_WHITE);
-    osb.drawtext(230, 60, buffer);
+    osb.setForeColor(OpenSourceBio::COLOR_WHITE);
+    osb.drawText(230, 60, buffer);
 
     // allow the screen to paint
-    osb.releasescreen();
+    osb.releaseScreen();
 
     delay(500);
 }

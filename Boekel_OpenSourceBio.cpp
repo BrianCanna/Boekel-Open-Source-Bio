@@ -19,7 +19,7 @@ Boekel::OpenSourceBio::OpenSourceBio()
  * @param _color The color you wish to use for the 
  *               foreground/text
  */
-void Boekel::OpenSourceBio::setforecolor(unsigned char _color)
+void Boekel::OpenSourceBio::setForeColor(unsigned char _color)
 {
     forecolor = _color;
 }
@@ -33,7 +33,7 @@ void Boekel::OpenSourceBio::setforecolor(unsigned char _color)
  * 
  * @param _color 
  */
-void Boekel::OpenSourceBio::setbackcolor(unsigned char _color)
+void Boekel::OpenSourceBio::setBackColor(unsigned char _color)
 {
     backcolor = _color;
 }
@@ -44,7 +44,7 @@ void Boekel::OpenSourceBio::setbackcolor(unsigned char _color)
  * 
  * @author Miguel (3/28/2015)
  */
-void Boekel::OpenSourceBio::waitforready()
+void Boekel::OpenSourceBio::waitForReady()
 {
   unsigned char r;
 
@@ -69,7 +69,7 @@ void Boekel::OpenSourceBio::waitforready()
  * @param _data 
  * @param _size 
  */
-void Boekel::OpenSourceBio::waitforresponse(unsigned char* _data, unsigned char _size)
+void Boekel::OpenSourceBio::waitForResponse(unsigned char* _data, unsigned char _size)
 {
   unsigned char r;
 
@@ -108,13 +108,13 @@ void Boekel::OpenSourceBio::waitforresponse(unsigned char* _data, unsigned char 
  * @param _count 
  * @param _data 
  */
-void Boekel::OpenSourceBio::databuffer(unsigned char _count, const unsigned char* _data)
+void Boekel::OpenSourceBio::dataBuffer(unsigned char _count, const unsigned char* _data)
 {
 
   unsigned char i;
 
   // wait for the device to be ready  
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_DATABUFFER);
@@ -125,7 +125,7 @@ void Boekel::OpenSourceBio::databuffer(unsigned char _count, const unsigned char
   {
   
     // wait for the device to be ready  
-    waitforready();
+    waitForReady();
 
     Wire.beginTransmission(I2C_ADDRESS);
     Wire.write(I2C_COMMAND_DATABUFFER);
@@ -160,7 +160,7 @@ void Boekel::OpenSourceBio::databuffer(unsigned char _count, const unsigned char
  * @param _x 
  * @param _y 
  */
-void Boekel::OpenSourceBio::sendextent(unsigned int _x, unsigned char _y)
+void Boekel::OpenSourceBio::sendExtent(unsigned int _x, unsigned char _y)
 {
   Wire.write((unsigned char)_x & 0xFF);
   Wire.write((unsigned char)(_x >> 8)); 
@@ -178,15 +178,15 @@ void Boekel::OpenSourceBio::sendextent(unsigned int _x, unsigned char _y)
  * @param _height 
  * @param _thickness 
  */
-void Boekel::OpenSourceBio::drawrect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness)
+void Boekel::OpenSourceBio::drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness)
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
 
   Wire.write(I2C_COMMAND_DRAWRECT);
-  sendextent(_x, _y);
-  sendextent(_width, _height);
+  sendExtent(_x, _y);
+  sendExtent(_width, _height);
   Wire.write(_thickness);
   Wire.write(forecolor);
 
@@ -199,9 +199,9 @@ void Boekel::OpenSourceBio::drawrect(unsigned int _x, unsigned char _y, unsigned
  * 
  * @author Miguel (3/28/2015)
  */
-void Boekel::OpenSourceBio::holdscreen()
+void Boekel::OpenSourceBio::holdScreen()
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_HOLDSCREEN);
@@ -214,9 +214,9 @@ void Boekel::OpenSourceBio::holdscreen()
  * 
  * @author Miguel (3/28/2015)
  */
-void Boekel::OpenSourceBio::releasescreen()
+void Boekel::OpenSourceBio::releaseScreen()
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_RELEASESCREEN);
@@ -230,9 +230,9 @@ void Boekel::OpenSourceBio::releasescreen()
  * 
  * @param _color 
  */
-void Boekel::OpenSourceBio::clearscreen(unsigned char _color)
+void Boekel::OpenSourceBio::clearScreen(unsigned char _color)
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
 
@@ -251,15 +251,15 @@ void Boekel::OpenSourceBio::clearscreen(unsigned char _color)
  * @param _width 
  * @param _height 
  */
-void Boekel::OpenSourceBio::drawfilledrect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height)
+void Boekel::OpenSourceBio::drawFilledRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height)
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
 
   Wire.write(I2C_COMMAND_DRAWFILLEDRECT);
-  sendextent(_x, _y);
-  sendextent(_width, _height);
+  sendExtent(_x, _y);
+  sendExtent(_width, _height);
   Wire.write(forecolor);
 
   Wire.endTransmission();
@@ -274,16 +274,16 @@ void Boekel::OpenSourceBio::drawfilledrect(unsigned int _x, unsigned char _y, un
  * @param _y 
  * @param _text 
  */
-void Boekel::OpenSourceBio::drawtext(unsigned int _x, unsigned char _y, const char* _text)
+void Boekel::OpenSourceBio::drawText(unsigned int _x, unsigned char _y, const char* _text)
 {
   // set the text into the databuffer
-  databuffer(strlen(_text), (const unsigned char*)_text);
+  dataBuffer(strlen(_text), (const unsigned char*)_text);
   
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_DRAWTEXT);
-  sendextent(_x, _y);
+  sendExtent(_x, _y);
   Wire.write(forecolor);
   Wire.write(backcolor);
   Wire.endTransmission();
@@ -301,17 +301,17 @@ void Boekel::OpenSourceBio::drawtext(unsigned int _x, unsigned char _y, const ch
  * @param _pointcount 
  * @param _points 
  */
-void Boekel::OpenSourceBio::drawgraph_bars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points)
+void Boekel::OpenSourceBio::drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points)
 {
   // set the points into the data buffer
-  databuffer(_pointcount, _points);
+  dataBuffer(_pointcount, _points);
   
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_DRAWGRAPH_BAR);
-  sendextent(_x, _y);
-  sendextent(_width, _height);
+  sendExtent(_x, _y);
+  sendExtent(_width, _height);
   Wire.write(forecolor);
   Wire.write(backcolor);
   Wire.endTransmission();
@@ -329,17 +329,17 @@ void Boekel::OpenSourceBio::drawgraph_bars(unsigned int _x, unsigned char _y, un
  * @param _pointcount 
  * @param _points 
  */
-void Boekel::OpenSourceBio::drawgraph_step(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points)
+void Boekel::OpenSourceBio::drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points)
 {
   // set the points into the data buffer
-  databuffer(_pointcount, _points);
+  dataBuffer(_pointcount, _points);
   
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_DRAWGRAPH_STEP);
-  sendextent(_x, _y);
-  sendextent(_width, _height);
+  sendExtent(_x, _y);
+  sendExtent(_width, _height);
   Wire.write(forecolor);
   Wire.write(backcolor);
   Wire.endTransmission();
@@ -350,15 +350,15 @@ void Boekel::OpenSourceBio::drawgraph_step(unsigned int _x, unsigned char _y, un
  * 
  * @author Miguel (3/28/2015)
  */
-void Boekel::OpenSourceBio::updatereadings()
+void Boekel::OpenSourceBio::updateReadings()
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_READ);
   Wire.endTransmission();
 
-  waitforresponse((unsigned char*)&osb_reading, sizeof(reading_data_t));
+  waitForResponse((unsigned char*)&osb_reading, sizeof(reading_data_t));
 }
 
 /**
@@ -368,16 +368,16 @@ void Boekel::OpenSourceBio::updatereadings()
  * 
  * @return struct time_data_t* 
  */
-struct Boekel::time_data_t* Boekel::OpenSourceBio::gettime()
+struct Boekel::time_data_t* Boekel::OpenSourceBio::getTime()
 {
 
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_TIME);
   Wire.endTransmission();
 
-  waitforresponse((unsigned char*)&osb_time, sizeof(time_data_t));
+  waitForResponse((unsigned char*)&osb_time, sizeof(time_data_t));
 
   return(&(osb_time));
 
@@ -390,15 +390,15 @@ struct Boekel::time_data_t* Boekel::OpenSourceBio::gettime()
  * 
  * @return unsigned long 
  */
-unsigned long Boekel::OpenSourceBio::gettime_t()
+unsigned long Boekel::OpenSourceBio::getTimeRaw()
 {
-  waitforready();
+  waitForReady();
 
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(I2C_COMMAND_TIMET);
   Wire.endTransmission();
 
-  waitforresponse((unsigned char*)&osb_timet, sizeof(timet_data_t));
+  waitForResponse((unsigned char*)&osb_timet, sizeof(timet_data_t));
 
   return(osb_timet.time_t);
 }
@@ -412,7 +412,7 @@ unsigned long Boekel::OpenSourceBio::gettime_t()
  * 
  * @return char 
  */
-char Boekel::OpenSourceBio::get_readingtype()
+char Boekel::OpenSourceBio::getReadingType()
 {
     return(osb_reading.type);
 }
@@ -427,7 +427,7 @@ char Boekel::OpenSourceBio::get_readingtype()
  * 
  * @return char 
  */
-char Boekel::OpenSourceBio::get_readingvalid()
+char Boekel::OpenSourceBio::getReadingValid()
 {
     return(osb_reading.readingsvalid);
 }
@@ -442,7 +442,7 @@ char Boekel::OpenSourceBio::get_readingvalid()
  * 
  * @return char 
  */
-char Boekel::OpenSourceBio::get_temperaturevalid()
+char Boekel::OpenSourceBio::getTemperatureValid()
 {
     return(osb_reading.temperaturevalid);
 }
@@ -457,7 +457,7 @@ char Boekel::OpenSourceBio::get_temperaturevalid()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_temperature()
+double Boekel::OpenSourceBio::getTemperature()
 {
   // for all electrochemical readings, the temperature reading * 10.0 is in the temperature field
   // just divide by 10.0 to get the temperature again  
@@ -475,9 +475,9 @@ double Boekel::OpenSourceBio::get_temperature()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_ph()
+double Boekel::OpenSourceBio::getPH()
 {
-  if(get_readingtype() != READING_TYPE_PH)
+  if(getReadingType() != READING_TYPE_PH)
     return(0.0);
 
   // for pH readings, the pH reading * 1000.0 is in reading 1
@@ -496,9 +496,9 @@ double Boekel::OpenSourceBio::get_ph()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_ph_mV()
+double Boekel::OpenSourceBio::getPHmV()
 {
-  if(get_readingtype() != READING_TYPE_PH)
+  if(getReadingType() != READING_TYPE_PH)
     return(0.0);
 
   // for pH readings, the mV reading * 10.0 is in reading 2
@@ -517,9 +517,9 @@ double Boekel::OpenSourceBio::get_ph_mV()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_ec()
+double Boekel::OpenSourceBio::getEC()
 {
-  if(get_readingtype() != READING_TYPE_EC)
+  if(getReadingType() != READING_TYPE_EC)
     return(0.0);
 
   // for EC readings, the uS/cm reading * 10.0 is in reading 1
@@ -538,9 +538,9 @@ double Boekel::OpenSourceBio::get_ec()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_ec_pss()
+double Boekel::OpenSourceBio::getECpss()
 {
-  if(get_readingtype() != READING_TYPE_EC)
+  if(getReadingType() != READING_TYPE_EC)
     return(0.0);
 
   // for EC readings, the PSS reading * 10.0 is in reading 1
@@ -559,9 +559,9 @@ double Boekel::OpenSourceBio::get_ec_pss()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_ec_tds()
+double Boekel::OpenSourceBio::getECtds()
 {
-  if(get_readingtype() != READING_TYPE_EC)
+  if(getReadingType() != READING_TYPE_EC)
     return(0.0);
 
   // for EC readings, the TDS reading * 10.0 is in reading 1
@@ -580,9 +580,9 @@ double Boekel::OpenSourceBio::get_ec_tds()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_do_mgl()
+double Boekel::OpenSourceBio::getDOmgl()
 {
-  if(get_readingtype() != READING_TYPE_DO)
+  if(getReadingType() != READING_TYPE_DO)
     return(0.0);
 
   // for DO readings, the mg/L reading * 100.0 is in reading 1
@@ -601,9 +601,9 @@ double Boekel::OpenSourceBio::get_do_mgl()
  * 
  * @return double 
  */
-double Boekel::OpenSourceBio::get_do_percentage()
+double Boekel::OpenSourceBio::getDOpercentage()
 {
-  if(get_readingtype() != READING_TYPE_DO)
+  if(getReadingType() != READING_TYPE_DO)
     return(0.0);
 
   // for DO readings, the percentage reading * 10.0 is in reading 1

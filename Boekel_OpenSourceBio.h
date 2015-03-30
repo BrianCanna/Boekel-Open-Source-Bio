@@ -11,30 +11,30 @@ namespace Boekel{
 
     public:
         OpenSourceBio();
-        void setforecolor(unsigned char _color);
-        void setbackcolor(unsigned char _color);
-        void drawrect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness);
-        void holdscreen();
-        void releasescreen();
-        void clearscreen(unsigned char _color);
-        void drawfilledrect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height);
-        void drawtext(unsigned int _x, unsigned char _y, const char* _text);
-        void drawgraph_bars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points);
-        void drawgraph_step(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points);
-        void updatereadings();
-        struct time_data_t* gettime();
-        unsigned long gettime_t();
-        char get_readingtype();
-        char get_readingvalid();
-        char get_temperaturevalid();
-        double get_temperature();
-        double get_ph();
-        double get_ph_mV();
-        double get_ec();
-        double get_ec_pss();
-        double get_ec_tds();
-        double get_do_mgl();
-        double get_do_percentage();
+        void setForeColor(unsigned char _color);
+        void setBackColor(unsigned char _color);
+        void drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _thickness);
+        void holdScreen();
+        void releaseScreen();
+        void clearScreen(unsigned char _color);
+        void drawFilledRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height);
+        void drawText(unsigned int _x, unsigned char _y, const char* _text);
+        void drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points);
+        void drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points);
+        void updateReadings();
+        struct time_data_t* getTime();
+        unsigned long getTimeRaw();
+        char getReadingType();
+        char getReadingValid();
+        char getTemperatureValid();
+        double getTemperature();
+        double getPH();
+        double getPHmV();
+        double getEC();
+        double getECpss();
+        double getECtds();
+        double getDOmgl();
+        double getDOpercentage();
 
         static const uint8_t COLOR_BLACK = 0;
         static const uint8_t COLOR_WHITE = 1;
@@ -56,10 +56,10 @@ namespace Boekel{
     protected:
 
     private:
-        void waitforready();
-        void waitforresponse(unsigned char* _data, unsigned char _size);
-        void databuffer(unsigned char _count, const unsigned char* _data);
-        void sendextent(unsigned int _x, unsigned char _y);
+        void waitForReady();
+        void waitForResponse(unsigned char* _data, unsigned char _size);
+        void dataBuffer(unsigned char _count, const unsigned char* _data);
+        void sendExtent(unsigned int _x, unsigned char _y);
 
         reading_data_t osb_reading;
         time_data_t osb_time;

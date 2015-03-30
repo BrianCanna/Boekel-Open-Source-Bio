@@ -19,12 +19,12 @@ void loop()
 {
  delay(3000);
  //Setting Colors
- osb.setforecolor(OpenSourceBio::COLOR_RED);
- osb.setbackcolor(OpenSourceBio::COLOR_TRANSPARENT);
+ osb.setForeColor(OpenSourceBio::COLOR_RED);
+ osb.setBackColor(OpenSourceBio::COLOR_TRANSPARENT);
 
 
  //Clearing Screen
- osb.clearscreen(OpenSourceBio::COLOR_BLACK);
+ osb.clearScreen(OpenSourceBio::COLOR_BLACK);
  // Print command osb_drawtext(x coordinate, y coordinate, “Text”);
- osb.drawtext(100, 100, "HELLO WORLD");
+ osb.drawText(100, 100, "HELLO WORLD");
 } 
