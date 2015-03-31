@@ -20,11 +20,11 @@ namespace Boekel{
             drawGraphBars(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points, unsigned char _forecolor,unsigned char _backcolor),
             drawGraphStep(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _pointcount, unsigned char* _points, unsigned char _forecolor,unsigned char _backcolor),
             updateReadings(),
-            displayText(unsigned int _x, unsigned int _y, unsigned char _forecolor, unsigned char _backcolor, const char* _text); //@todo
-            //displayBarGraph(tperiod), //@todo
-            //displayStepGraph(tperiod); //@todo
-            
+            displayText(unsigned int _x, unsigned int _y, unsigned char _forecolor, unsigned char _backcolor, const char* _text);
 
+        bool stepGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize = DEFAULT_GRAPH_POINTS),
+             barGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize = DEFAULT_GRAPH_POINTS);
+            
         struct time_data_t* getTime();
 
         unsigned long getTimeRaw();
@@ -67,6 +67,9 @@ namespace Boekel{
                             READING_TYPE_EC = 'E',
                             READING_TYPE_DO = 'D',
                             READING_TYPE_TEMPERATURE = 'T';
+
+        static const uint8_t MAX_GRAPH_POINTS = 250,
+                             DEFAULT_GRAPH_POINTS = 64;
 
     protected:
 

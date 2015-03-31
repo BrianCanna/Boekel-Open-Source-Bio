@@ -723,3 +723,148 @@ void Boekel::OpenSourceBio::displayText(unsigned int _x, unsigned int _y, unsign
     setBackColor(_backcolor);
     drawText(_x,_y,_text);
 }
+
+/**
+ * 
+ * 
+ * @author Miguel (3/31/2015)
+ * 
+ * @param sampleTimeMinutes The number of minutes for which the 
+ *                          device will take samples.
+ * @param type The type of measurement i.e. PH, DO, Temperature, 
+ *             EC
+ * @param sampleSize The number of samples to take 
+ *  
+ */
+
+
+bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize)
+{
+    static bool setup = false; // this function will run inside loop() but only want to execute some code the first time.
+
+    if(sampleSize>MAX_GRAPH_POINTS)
+    {
+        sampleSize = MAX_GRAPH_POINTS;
+    }
+
+
+    static unsigned char *data = (unsigned char*)calloc(sampleSize,sizeof(unsigned char));
+    static unsigned char datacount = 0;
+
+    if(setup==false) // we only want to execute the following once
+    {   
+
+        // hold all painting
+        holdScreen();
+
+        // clear the screen
+        clearScreen(OpenSourceBio::COLOR_BLACK);
+
+        displayFilledRectangle(5,90,310,120,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,3);
+
+        // draw some text
+        displayText(60, 10,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Sampling in Progress");
+
+        char type_name[20]="Last ";
+        
+        switch(type)
+        {
+        case READING_TYPE_DO:
+            strcat(type_name,"DO sample:");
+            break;
+        case READING_TYPE_PH:
+            strcat(type_name,"PH sample:");
+            break;
+        case READING_TYPE_TEMPERATURE:
+            strcat(type_name,"Temp. sample:");
+            break;
+        case READING_TYPE_EC:
+            strcat(type_name,"EC sample:");
+            break;
+        default:
+            // invalid type
+            break;
+        }
+
+        displayText(50, 60,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, type_name);
+
+        // release the screen
+        releaseScreen();
+        setup = true;
+    }
+
+    static unsigned long timeStart = millis();
+
+    if(millis()<(timeStart+sampleTimeMinutes*60UL*1000UL))
+    {   
+        
+        unsigned char i;
+        char buffer[12];
+        double dataValue;
+
+        // shift the data down a bit?
+        datacount++;
+        
+        // hold all painting
+        holdScreen();
+
+        // snap current readings
+        updateReadings();
+
+        // save the data if it's valid, otherwise, give it some default values
+        if(getTemperatureValid())
+        {
+            // get the temperature
+            dataValue = getTemperature();
+
+            // if it exceeded the maximum, make sure we paint it correctly
+            if(dataValue < maxValueExpected)
+            {   
+                data[datacount - 1] = (getTemperature() * 255.0) / maxValueExpected;
+            }
+            else
+            {   
+                data[datacount - 1] = 255;
+            }
+
+            // save the temperature to a string, so we can display it
+            dtostrf(getTemperature(), 2, 1, buffer);
+        }
+        else
+        {
+            // no data - just use a default point
+            data[datacount - 1] = 128;
+            buffer[0] = 0;
+        }
+
+        // clear the rectangles where the temperature reading and graphs were using black on black to clear the previous data from the screen
+        displayFilledRectangle(230, 60, 80, 16,OpenSourceBio::COLOR_BLACK,OpenSourceBio::COLOR_BLACK,0);
+        displayFilledRectangle(10, 95, 300, 110,OpenSourceBio::COLOR_BLACK,OpenSourceBio::COLOR_BLACK,0);
+
+        // use red to draw the graph
+
+        drawGraphStep(10, 95, 300, 110, sampleSize, data,OpenSourceBio::COLOR_RED, OpenSourceBio::COLOR_TRANSPARENT);
+
+        // use white to draw the current value
+        displayText(230, 60, OpenSourceBio::COLOR_WHITE, OpenSourceBio::COLOR_TRANSPARENT, buffer);
+
+        // allow the screen to paint
+        releaseScreen();
+ 
+        // change sampleSize to unsigned long
+
+
+        unsigned long sampleDelayMs = 60UL*1000UL*sampleTimeMinutes/sampleSize; // totalTimInMilliSeconds / SampleSize
+        
+        delay(sampleDelayMs);
+        return false;
+    }else{
+        return true;
+    }
+}
+
+bool Boekel::OpenSourceBio::barGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize)
+{
+
+}
+
