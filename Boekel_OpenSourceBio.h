@@ -22,8 +22,8 @@ namespace Boekel{
             updateReadings(),
             displayText(unsigned int _x, unsigned int _y, unsigned char _forecolor, unsigned char _backcolor, const char* _text);
 
-        bool stepGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize = DEFAULT_GRAPH_POINTS),
-             barGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize = DEFAULT_GRAPH_POINTS);
+        bool stepGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize = DEFAULT_GRAPH_POINTS),
+             barGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize = DEFAULT_GRAPH_POINTS);
             
         struct time_data_t* getTime();
 

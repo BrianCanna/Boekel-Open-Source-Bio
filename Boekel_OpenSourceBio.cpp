@@ -732,13 +732,12 @@ void Boekel::OpenSourceBio::displayText(unsigned int _x, unsigned int _y, unsign
  * @param sampleTimeMinutes The number of minutes for which the 
  *                          device will take samples.
  * @param type The type of measurement i.e. PH, DO, Temperature, 
- *             EC
+ *             EC.
+ *  
  * @param sampleSize The number of samples to take 
  *  
  */
-
-
-bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize)
+bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize)
 {
     static bool setup = false; // this function will run inside loop() but only want to execute some code the first time.
 
@@ -765,29 +764,6 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, const uint
         // draw some text
         displayText(60, 10,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Sampling in Progress");
 
-        char type_name[20]="Last ";
-        
-        switch(type)
-        {
-        case READING_TYPE_DO:
-            strcat(type_name,"DO sample:");
-            break;
-        case READING_TYPE_PH:
-            strcat(type_name,"PH sample:");
-            break;
-        case READING_TYPE_TEMPERATURE:
-            strcat(type_name,"Temp. sample:");
-            break;
-        case READING_TYPE_EC:
-            strcat(type_name,"EC sample:");
-            break;
-        default:
-            // invalid type
-            break;
-        }
-
-        displayText(50, 60,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, type_name);
-
         // release the screen
         releaseScreen();
         setup = true;
@@ -811,30 +787,97 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, const uint
         // snap current readings
         updateReadings();
 
-        // save the data if it's valid, otherwise, give it some default values
-        if(getTemperatureValid())
+        char type_name[20]="Last ";
+        
+        switch(getReadingType())
         {
-            // get the temperature
-            dataValue = getTemperature();
+        case READING_TYPE_DO:
+            strcat(type_name,"DO sample:");
+            break;
+        case READING_TYPE_PH:
+            strcat(type_name,"PH sample:");
+            break;
+        case READING_TYPE_TEMPERATURE:
+            strcat(type_name,"Temp. sample:");
+            break;
+        case READING_TYPE_EC:
+            strcat(type_name,"EC sample:");
+            break;
+        default:
+            // invalid type
+            break;
+        }
 
-            // if it exceeded the maximum, make sure we paint it correctly
-            if(dataValue < maxValueExpected)
-            {   
-                data[datacount - 1] = (getTemperature() * 255.0) / maxValueExpected;
+        displayFilledRectangle(0,60,200,30,COLOR_BLACK,COLOR_BLACK,0); // delete any previous text incase user changed probes
+        displayText(50, 60,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_BLACK, type_name);
+
+        if(getReadingType() == READING_TYPE_PH)
+        {
+            if(getReadingValid())
+            {
+                dataValue = getPH();
+                dtostrf(getPH(), 2, 3, buffer);
             }
             else
-            {   
-                data[datacount - 1] = 255;
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
             }
+        }
+        else if(getReadingType() == READING_TYPE_DO)
+        {
+            if(getReadingValid())
+            {
+                dataValue = getDOmgl();
+                dtostrf(getDOmgl(), 3, 1, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
+        else if(getReadingType() == READING_TYPE_EC)
+        {
+            if(getReadingValid())
+            {
+                dataValue = getEC();
+                dtostrf(getEC(), 6, 1, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
+        else if(getReadingType() == READING_TYPE_TEMPERATURE)
+        {   
+            if(getTemperatureValid())
+            {
+                // get the temperature
+                dataValue = getTemperature();
+                // save the temperature to a string, so we can display it
+                dtostrf(getTemperature(), 2, 1, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
 
-            // save the temperature to a string, so we can display it
-            dtostrf(getTemperature(), 2, 1, buffer);
+        // if it exceeded the maximum, make sure we paint it correctly
+        if(dataValue < maxValueExpected)
+        {   
+            data[datacount - 1] = (dataValue * 255.0) / maxValueExpected;
         }
         else
-        {
-            // no data - just use a default point
-            data[datacount - 1] = 128;
-            buffer[0] = 0;
+        {   
+            data[datacount - 1] = 255;
         }
 
         // clear the rectangles where the temperature reading and graphs were using black on black to clear the previous data from the screen
@@ -856,14 +899,14 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, const uint
 
         unsigned long sampleDelayMs = 60UL*1000UL*sampleTimeMinutes/sampleSize; // totalTimInMilliSeconds / SampleSize
         
-        delay(sampleDelayMs);
+        delay(sampleDelayMs); // wait before taking the next sample
         return false;
     }else{
         return true;
     }
 }
 
-bool Boekel::OpenSourceBio::barGraph(unsigned int sampleTimeMinutes, const uint8_t type, int maxValueExpected, unsigned int sampleSize)
+bool Boekel::OpenSourceBio::barGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize)
 {
 
 }
