@@ -6,7 +6,7 @@
 
 using namespace Boekel;
 
-#define SAMPLING_TIME_MINUTES 3 // the number of minutes for which the session will run
+#define SAMPLING_TIME_MINUTES 3 // the number of minutes for which the sampling session will run
 #define MAX_EXPECTED_VALUE 14 // max expected value (integer) of the units you are trying to measure. In this case we chose 14 for PH measurements.
 
 OpenSourceBio osb;

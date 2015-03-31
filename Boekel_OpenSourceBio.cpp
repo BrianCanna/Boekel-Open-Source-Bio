@@ -807,8 +807,8 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, unsigned l
             // invalid type
             break;
         }
-
-        displayFilledRectangle(0,60,200,30,COLOR_BLACK,COLOR_BLACK,0); // delete any previous text incase user changed probes
+        
+        displayFilledRectangle(0,60,300,30,COLOR_BLACK,COLOR_BLACK,0); // delete any previous text incase user changed probes
         displayText(50, 60,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_BLACK, type_name);
 
         if(getReadingType() == READING_TYPE_PH)
@@ -908,6 +908,170 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, unsigned l
 
 bool Boekel::OpenSourceBio::barGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize)
 {
+    static bool setup = false; // this function will run inside loop() but only want to execute some code the first time.
 
+    if(sampleSize>MAX_GRAPH_POINTS)
+    {
+        sampleSize = MAX_GRAPH_POINTS;
+    }
+
+
+    static unsigned char *data = (unsigned char*)calloc(sampleSize,sizeof(unsigned char));
+    static unsigned char datacount = 0;
+
+    if(setup==false) // we only want to execute the following once
+    {   
+
+        // hold all painting
+        holdScreen();
+
+        // clear the screen
+        clearScreen(OpenSourceBio::COLOR_BLACK);
+
+        displayFilledRectangle(5,90,310,120,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,3);
+
+        // draw some text
+        displayText(60, 10,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "Sampling in Progress");
+
+        // release the screen
+        releaseScreen();
+        setup = true;
+    }
+
+    static unsigned long timeStart = millis();
+
+    if(millis()<(timeStart+sampleTimeMinutes*60UL*1000UL))
+    {   
+        
+        unsigned char i;
+        char buffer[12];
+        double dataValue;
+
+        // shift the data down a bit?
+        datacount++;
+        
+        // hold all painting
+        holdScreen();
+
+        // snap current readings
+        updateReadings();
+
+        char type_name[20]="Last ";
+        
+        switch(getReadingType())
+        {
+        case READING_TYPE_DO:
+            strcat(type_name,"DO sample:");
+            break;
+        case READING_TYPE_PH:
+            strcat(type_name,"PH sample:");
+            break;
+        case READING_TYPE_TEMPERATURE:
+            strcat(type_name,"Temp. sample:");
+            break;
+        case READING_TYPE_EC:
+            strcat(type_name,"EC sample:");
+            break;
+        default:
+            // invalid type
+            break;
+        }
+
+        displayFilledRectangle(0,60,300,30,COLOR_BLACK,COLOR_BLACK,0); // delete any previous text incase user changed probes
+        displayText(50, 60,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_BLACK, type_name);
+
+        if(getReadingType() == READING_TYPE_PH)
+        {
+            if(getReadingValid())
+            {
+                dataValue = getPH();
+                dtostrf(getPH(), 2, 3, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
+        else if(getReadingType() == READING_TYPE_DO)
+        {
+            if(getReadingValid())
+            {
+                dataValue = getDOmgl();
+                dtostrf(getDOmgl(), 3, 1, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
+        else if(getReadingType() == READING_TYPE_EC)
+        {
+            if(getReadingValid())
+            {
+                dataValue = getEC();
+                dtostrf(getEC(), 6, 1, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
+        else if(getReadingType() == READING_TYPE_TEMPERATURE)
+        {   
+            if(getTemperatureValid())
+            {
+                // get the temperature
+                dataValue = getTemperature();
+                // save the temperature to a string, so we can display it
+                dtostrf(getTemperature(), 2, 1, buffer);
+            }
+            else
+            {
+                // no data - just use a default point
+                data[datacount - 1] = 128;
+                buffer[0] = 0;
+            }
+        }
+
+        // if it exceeded the maximum, make sure we paint it correctly
+        if(dataValue < maxValueExpected)
+        {   
+            data[datacount - 1] = (dataValue * 255.0) / maxValueExpected;
+        }
+        else
+        {   
+            data[datacount - 1] = 255;
+        }
+
+        // clear the rectangles where the temperature reading and graphs were using black on black to clear the previous data from the screen
+        displayFilledRectangle(230, 60, 80, 16,OpenSourceBio::COLOR_BLACK,OpenSourceBio::COLOR_BLACK,0);
+        displayFilledRectangle(10, 95, 300, 110,OpenSourceBio::COLOR_BLACK,OpenSourceBio::COLOR_BLACK,0);
+
+        // use red to draw the graph
+
+        drawGraphBars(10, 95, 300, 110, sampleSize, data,OpenSourceBio::COLOR_BLUE, OpenSourceBio::COLOR_TRANSPARENT);
+
+        // use white to draw the current value
+        displayText(230, 60, OpenSourceBio::COLOR_WHITE, OpenSourceBio::COLOR_TRANSPARENT, buffer);
+
+        // allow the screen to paint
+        releaseScreen();
+ 
+        // change sampleSize to unsigned long
+
+
+        unsigned long sampleDelayMs = 60UL*1000UL*sampleTimeMinutes/sampleSize; // totalTimInMilliSeconds / SampleSize
+        
+        delay(sampleDelayMs); // wait before taking the next sample
+        return false;
+    }else{
+        return true;
+    }
 }
 
