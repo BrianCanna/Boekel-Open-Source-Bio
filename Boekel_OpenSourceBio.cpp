@@ -168,15 +168,16 @@ void Boekel::OpenSourceBio::sendExtent(unsigned int _x, unsigned char _y)
 }
 
 /**
- * @brief draws a rectangle with border only.
+ * @brief Draws a rectangle with a border (no fill)
  * 
- * @author Miguel (3/28/2015)
+ * @author Miguel (4/1/2015)
  * 
- * @param _x 
- * @param _y 
+ * @param _x Top left corner x position
+ * @param _y Top left corner y position
  * @param _width 
  * @param _height 
- * @param _thickness 
+ * @param _forecolor Border color
+ * @param _thickness Border thickness
  */
 void Boekel::OpenSourceBio::drawRect(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _forecolor, unsigned char _thickness)
 {
@@ -245,13 +246,13 @@ void Boekel::OpenSourceBio::clearScreen(unsigned char _color)
 /**
  * @brief Display a filled rectangle without a border color.
  * 
- * @author Miguel (3/30/2015)
+ * @author Miguel (4/1/2015)
  * 
- * @param _x 
- * @param _y 
+ * @param _x Top left corner x position
+ * @param _y Top left corner y position
  * @param _width 
  * @param _height 
- * @param _backcolor 
+ * @param _backcolor Fill color
  */
 void Boekel::OpenSourceBio::drawFilledRectangle(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _backcolor)
 {
@@ -270,16 +271,17 @@ void Boekel::OpenSourceBio::drawFilledRectangle(unsigned int _x, unsigned char _
 }
 
 /**
- * @brief Displayed a filled ractangled with a border.
+ * @brief Displays a filled ractangled with a border.
  * 
- * @author Miguel (3/30/2015)
+ * @author Miguel (4/1/2015)
  * 
- * @param _x 
- * @param _y 
+ * @param _x Top left corner x position
+ * @param _y Top left corner y position
  * @param _width 
  * @param _height 
- * @param _forecolor 
- * @param _backcolor 
+ * @param _forecolor Border color
+ * @param _backcolor Fill color
+ * @param _thickness Border thickness
  */
 void Boekel::OpenSourceBio::displayFilledRectangle(unsigned int _x, unsigned char _y, unsigned int _width, unsigned char _height, unsigned char _forecolor, unsigned char _backcolor, unsigned char _thickness)
 {
@@ -304,8 +306,8 @@ void Boekel::OpenSourceBio::displayFilledRectangle(unsigned int _x, unsigned cha
  * 
  * @author Miguel (3/28/2015)
  * 
- * @param _x 
- * @param _y 
+ * @param _x Top left corner x position
+ * @param _y Top left corner y position
  * @param _text 
  */
 void Boekel::OpenSourceBio::drawText(unsigned int _x, unsigned char _y, const char* _text)
@@ -328,8 +330,8 @@ void Boekel::OpenSourceBio::drawText(unsigned int _x, unsigned char _y, const ch
  * 
  * @author Miguel (3/28/2015)
  * 
- * @param _x 
- * @param _y 
+ * @param _x Top left corner x position
+ * @param _y Top left corner y position
  * @param _width 
  * @param _height 
  * @param _pointcount 
@@ -356,8 +358,8 @@ void Boekel::OpenSourceBio::drawGraphBars(unsigned int _x, unsigned char _y, uns
  * 
  * @author Miguel (3/28/2015)
  * 
- * @param _x 
- * @param _y 
+ * @param _x Top left corner x position
+ * @param _y Top left corner y position
  * @param _width 
  * @param _height 
  * @param _pointcount 
@@ -380,7 +382,7 @@ void Boekel::OpenSourceBio::drawGraphStep(unsigned int _x, unsigned char _y, uns
 }
 
 /**
- * @brief gets the current readings from the OSB circuit
+ * @brief Updates the data structures / readings
  * 
  * @author Miguel (3/28/2015)
  */
@@ -438,7 +440,7 @@ unsigned long Boekel::OpenSourceBio::getTimeRaw()
 }
 
 /**
- * @brief returns the type of reading taken 
+ * @brief returns the type of reading the unit is set to 
  * @note A successful call to updatereadings() must occur before
  *       calls to this function
  * 
@@ -645,23 +647,51 @@ double Boekel::OpenSourceBio::getDOpercentage()
   return((double)osb_reading.reading2 / 10.0);
 }
 
+/**
+ * @brief Gets the hour of the day
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return unsigned char 
+ */
 unsigned char Boekel::OpenSourceBio::getHours()
 {
      
      return getTime()->hours;
 }
 
+/**
+ * @brief Gets the minute of the time
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return unsigned char 
+ */
 unsigned char Boekel::OpenSourceBio::getMinutes()
 {
      
     return getTime()->minutes;
 }
 
+/**
+ * @brief gets the seconds of the time.
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return unsigned char 
+ */
 unsigned char Boekel::OpenSourceBio::getSeconds()
 { 
     return getTime()->seconds;
 }
 
+/**
+ * @brief Gets the week day e.g. Sun, Mon, etc.
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return const char* 
+ */
 const char* Boekel::OpenSourceBio::getWeekDay()
 {
 
@@ -701,22 +731,55 @@ const char* Boekel::OpenSourceBio::getWeekDay()
         break;
     }
 }
+
+/**
+ * @brief Gets the numeric day of the month
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return unsigned char 
+ */
 unsigned char Boekel::OpenSourceBio::getDay()
 {
     return getTime()->day;
 }
 
+/**
+ * @brief Gets the numeric month
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return unsigned char 
+ */
 unsigned char Boekel::OpenSourceBio::getMonth()
 {
-     // @todo
+
     return getTime()->month;
 }
 
+/**
+ * @brief Gets the year
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @return unsigned int 
+ */
 unsigned int Boekel::OpenSourceBio::getYear()
 {
     return getTime()->year;
 }
 
+/**
+ * 
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @param _x Top left corner
+ * @param _y Top left ocrner
+ * @param _forecolor Text color
+ * @param _backcolor Background color
+ * @param _text 
+ */
 void Boekel::OpenSourceBio::displayText(unsigned int _x, unsigned int _y, unsigned char _forecolor, unsigned char _backcolor, const char* _text)
 {
     setForeColor(_forecolor);
@@ -725,16 +788,28 @@ void Boekel::OpenSourceBio::displayText(unsigned int _x, unsigned int _y, unsign
 }
 
 /**
- * 
+ * @details Used to draw a 
+ *        step graph of the current probe selected for a
+ *        specified amount of time. The function can only be
+ *        called once per program run i.e. Reupload the Arduino
+ *        sketch for multiple runs.
+ *  
+ * @note    Must be called inside loop() to take the next 
+ *          sample.
  * 
  * @author Miguel (3/31/2015)
  * 
  * @param sampleTimeMinutes The number of minutes for which the 
  *                          device will take samples.
- * @param type The type of measurement i.e. PH, DO, Temperature, 
- *             EC.
+ * @param maxValueExpected  The maximum value expected, e.g. 14 
+ *                          for PH
  *  
- * @param sampleSize The number of samples to take 
+ * @param sampleSize The number of samples to take. The maximum 
+ *                   number that can be used is 250, the default
+ *                   is 64 if not specified when called.
+ *  
+ * @return bool Returns true when the sampling session is 
+ *         complete, returns false otherwise.
  *  
  */
 bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize)
@@ -853,7 +928,7 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, unsigned l
                 buffer[0] = 0;
             }
         }
-        else if(getReadingType() == READING_TYPE_TEMPERATURE)
+        else if(getReadingType() == READING_TYPE_TEMPERATURE) // temperature MUST be last because it is always reading temperature
         {   
             if(getTemperatureValid())
             {
@@ -906,6 +981,23 @@ bool Boekel::OpenSourceBio::stepGraph(unsigned int sampleTimeMinutes, unsigned l
     }
 }
 
+/**
+ * @details Used to draw a bar graph of the current probe 
+ *        selected for a specified amount of time. The function
+ *        can only be called once per program run i.e. Reupload
+ *        the Arduino sketch for multiple runs.
+ *  
+ * @note Must be called inside loop() to take the next sample.
+ * 
+ * @author Miguel (4/1/2015)
+ * 
+ * @param sampleTimeMinutes see stepGraph above
+ * @param maxValueExpected see stepGraph above
+ * @param sampleSize see stepGraph above
+ * 
+ * @return bool returns true when then sampling session is 
+ *         complete
+ */
 bool Boekel::OpenSourceBio::barGraph(unsigned int sampleTimeMinutes, unsigned long maxValueExpected, unsigned int sampleSize)
 {
     static bool setup = false; // this function will run inside loop() but only want to execute some code the first time.

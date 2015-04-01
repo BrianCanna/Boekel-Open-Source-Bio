@@ -1,4 +1,4 @@
-// This code is used to get the current readings from the transmitter. 
+// This code is used to get and display/graph the  current readings from the transmitter. 
 // This also formats the readings and it will work regardless of the mode. 
 
 #include <Wire.h>

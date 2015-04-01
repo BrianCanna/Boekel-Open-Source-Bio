@@ -52,6 +52,7 @@ namespace Boekel{
             getDOmgl(),
             getDOpercentage();
 
+        // The colors and reading types
         static const uint8_t COLOR_BLACK = 0,
                             COLOR_WHITE = 1,
                             COLOR_GREEN = 2,
@@ -67,7 +68,7 @@ namespace Boekel{
                             READING_TYPE_EC = 'E',
                             READING_TYPE_DO = 'D',
                             READING_TYPE_TEMPERATURE = 'T';
-
+        // max number of points you can use in a graph
         static const uint8_t MAX_GRAPH_POINTS = 250,
                              DEFAULT_GRAPH_POINTS = 64;
 
