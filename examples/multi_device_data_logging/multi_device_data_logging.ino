@@ -38,15 +38,15 @@ OpenSourceBio osb; // create osb object.
 void setup()
 {
 
+ //Clearing Screen
+ osb.clearScreen(OpenSourceBio::COLOR_BLACK);
+
  // Note: if you want to log data in a PC, use "Serial" instad of my "mySerial". This is because with a PC you can log data using the OSB's USB type B connector/interface which is the Arduino's default serial port hardware.
 
  mySerial.begin(9600);// Set the baud rate to 9600 (Sets the speed (baud rate) for the serial communication. Supported baud rates are 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 31250, 38400, 57600, and 115200.)
                       // check that this baud rate value (9600 in this case) matches your device's e.g. CompactRIO
                       // The serial settings of the device you are attaching to the OSB need to be
                       // 8 data bits, no parity, one stop bit
-
- //Clearing Screen
- osb.clearScreen(OpenSourceBio::COLOR_BLACK);
 }
 
 void loop()
@@ -60,6 +60,10 @@ void loop()
                             // we'll use "readingBuffer" as the array.
 
     osb.updateReadings();
+
+    // we'll be displaying the readings on the screen for debugging purposes, feel free to remove any screen display code.
+    osb.holdScreen(); // we'll be upading on-screen text so don't refresh.
+    osb.clearScreen(OpenSourceBio::COLOR_BLACK); // repaint the screen to black
 
     // The data from the OSB via serial will have the following Comma Separated Value (CSV) format:
     // "S:xxxx,yyyy;\r\n" 
@@ -95,4 +99,13 @@ void loop()
     // reading = osb.getEC();
     // dtostrf(reading, 6, 1, readingBufferEC);
 
+    // display readings on the screen (not necessary but good for debugging purposes).
+    osb.displayText(10, 70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT, "mg/L");
+    osb.displayText(10,100,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,"Temperature: ");
+
+
+    osb.displayText(160,70,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,readingBufferDO); // display the reading value on the OSB screen
+    osb.displayText(160,100,OpenSourceBio::COLOR_WHITE,OpenSourceBio::COLOR_TRANSPARENT,readingBufferTemp); // display the reading value on the OSB screen
+    
+    osb.releaseScreen(); // release screen so the new text sent to it is drawn/displayed
 }
