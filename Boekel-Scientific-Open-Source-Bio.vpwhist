@@ -1,0 +1,20 @@
+[Global]
+CurrentProject=Boekel-Open-Source-Bio.vpj
+[ActiveConfig]
+Boekel-Open-Source-Bio.vpj=Debug
+[State]
+SCREEN: 1366 768 4 0 670 693 0 0 M 0 0 0 0 1181 629 0
+CWD: ..\Boekel-Open-Source-Bio
+FILEHIST: 9
+..\AllAboutEE-IR-Shield-Library\examples\Send_Without_Button_Press\Send_Without_Button_Press.ino
+..\AllAboutEE-IR-Shield-Library\examples\Light_Bulb_Control\Light_Bulb_Control.ino
+..\AllAboutEE-IR-Shield-Library\examples\Xbox_One_Control\Xbox_One_Control.ino
+..\AllAboutEE-IR-Shield-Library\examples\TV_Control\TV_Control.ino
+..\AllAboutEE-IR-Shield-Library\examples\TV_XboxOne_Fan_Control\TV_XboxOne_Fan_Control.ino
+..\AllAboutEE-IR-Shield-Library\AllAboutEE_IRrecv.h
+..\AllAboutEE-IR-Shield-Library\AllAboutEE_IRremoteInt.h
+\Users\Miguel\git\MAX11609EEE-Breakout-Board\Software\AllAboutEE-MAX11609-Library\AllAboutEE_MAX11609.h
+\Users\Miguel\git\MAX11609EEE-Breakout-Board\Software\AllAboutEE-MAX11609-Library\AllAboutEE_MAX11609.cpp
+TBCLASS: 0 0
+[ProjectDates]
+Boekel-Open-Source-Bio.vpj=20150531050133612
