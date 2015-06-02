@@ -156,6 +156,8 @@
 			<F N="examples/draw_text/draw_text.ino"/>
 			<F N="examples/hello_world/hello_world.ino"/>
 			<F N="examples/multi_device_data_logging/multi_device_data_logging.ino"/>
+			<F N="examples/reading_to_voltage/reading_to_voltage"/>
+			<F N="examples/reading_to_voltage/reading_to_voltage.ino"/>
 			<F N="examples/step_graph_samples_for_x_time/step_graph_samples_for_x_time.ino"/>
 			<F N="examples/multi_device_data_logging/temp"/>
 			<F N="examples/template/template.ino"/>

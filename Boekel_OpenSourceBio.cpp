@@ -1167,3 +1167,44 @@ bool Boekel::OpenSourceBio::barGraph(unsigned int sampleTimeMinutes, unsigned lo
     }
 }
 
+/**
+ * @brief Converts from reading to PWM value needed to represent 
+ *        the reading as a voltage between 0V and 5V. The
+ *        Arduino's PWM is 8-bit so the PWM value returns need
+ *        to be between 0 and 255.
+ * 
+ * @author Miguel (6/2/2015)
+ * 
+ * @param reading The sensor reading
+ * @param minValue The mininum possible/expected value the 
+ *                 sensor can return for the particular
+ *                 application. If unknown this could be the
+ *                 sensor's minimum specification value.
+ * @param maxValue The maximum possible/expected value the 
+ *                 sensor can return for the particular
+ *                 application. If unkown this could be the
+ *                 sensor's maximum specification value.
+ * 
+ * @return int The PWM value needed for analogWrite to represent 
+ *         the readings a as voltage between 0V and 5V
+ */
+int Boekel::OpenSourceBio::getPWM(double reading, double minValue, double maxValue)
+{
+    double pwmMin = 0;
+    double pwmMax = 255;
+
+    // To convert a reading to a PWM value between 0 and 255 we will use the point-slope equation y-y1 = m*(x-x1)
+
+    // The two points (x1,y1), (x2,y2) will be (minValue,pwmMin), (maxValue,pwmMax)
+    // m = (y1-y2)/(x1-x2)
+
+    double m = (pwmMin - pwmMax)/(minValue - maxValue); // calculate the slope
+
+    // Our output, the PWM value, will be y
+    
+    // Our input, reading, will be x
+    
+    double y = m * (reading - minValue) + pwmMin;
+
+    return ((int)y);
+}

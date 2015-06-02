@@ -43,6 +43,8 @@ namespace Boekel{
             getReadingValid(),
             getTemperatureValid();
 
+        int getPWM(double reading, double minValue, double maxValue);
+
         double getTemperature(),
             getPH(),
             getPHmV(),
